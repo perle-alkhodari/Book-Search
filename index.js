@@ -10,6 +10,24 @@ const port = 3000;
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+// Globals
+var booksList = await searchBooks("hi");
+
+app.get("/kotob/home", (req, res)=> {
+    res.render("home.ejs", {books: booksList});
+})
+
+app.post("/search", async (req, res)=> {
+    var userSearch = req.body.search;
+    var results = await searchBooks(userSearch);
+    booksList = results;
+    res.redirect("/kotob/home");
+})
+
+app.listen(port, ()=> {
+    console.log("Listening to port " + port + ".");
+})
+
 // Api
 async function searchBooks(query) {
     try {
@@ -18,7 +36,9 @@ async function searchBooks(query) {
             method: "GET",
             url: "https://www.googleapis.com/books/v1/volumes",
             params: {
-                q: query
+                q: query,
+                printType: "books",
+                orderBy: "relevance"
             }
         })
     } catch(error) {
@@ -37,23 +57,4 @@ async function searchBooks(query) {
     }
 
     return response.data;
-}
-
-app.get("/kotob/home", (req, res)=> {
-    res.render("home.ejs");
-})
-
-app.post("/search", async (req, res)=> {
-    var userSearch = req.body.search;
-    var results = await searchBooks(userSearch);
-    var totalItems = results.totalItems;
-    var books = [];
-    results.items.forEach(item => {
-        books.push(item.volumeInfo.title);
-    });
-    console.log(totalItems, books);
-})
-
-app.listen(port, ()=> {
-    console.log("Listening to port " + port + ".");
-})
+};

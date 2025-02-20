@@ -14,3 +14,17 @@ body {
     background-color: #FFCF50;
     color: #626F47;
 }
+
+.perle-section {
+    padding-top: 50px;
+}
+
+.card-img-top {
+    width: 120px;
+    padding-left: 15px;
+    padding-top: 15px;
+}
+
+.card {
+    margin-top: 15px;
+}

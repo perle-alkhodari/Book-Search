@@ -5,5 +5,23 @@
     "body-parser": "^1.20.3",
     "ejs": "^3.1.10",
     "express": "^4.21.2"
-  }
+  },
+  "name": "book-search",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/perle-alkhodari/Book-Search.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/perle-alkhodari/Book-Search/issues"
+  },
+  "homepage": "https://github.com/perle-alkhodari/Book-Search#readme",
+  "description": ""
 }

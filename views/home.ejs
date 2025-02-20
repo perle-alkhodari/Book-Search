@@ -1,5 +1,33 @@
 <%- include("partials/header.ejs") %>
 
+<section class="perle-section">
 
+    <div class="container">
+        <div class="row">
+            <% locals.books.items.forEach(book => { %>
+                <div class="col-md-4 col-xs-6">
+                    <div class="card" style="width: 18rem;">
+                        <% try { %>
+                            <img src="<%= book.volumeInfo.imageLinks.thumbnail %>" class="card-img-top" alt="...">
+                        <% } catch (error) { %>
+                            <img src="images/Image-not-found.png" class="card-img-top" alt="image not found">
+                        <% } %>
+                        <div class="card-body">
+                            <h5 class="card-title"> <%= book.volumeInfo.title %> </h5>
+                            <% if (book.volumeInfo.authors) {%>
+                            <p class="card-text">by <%= book.volumeInfo.authors %></p>
+                            <% } else { %>
+                            <p class="card-text">by unknown</p>
+                            <% } %>
+                            <p class="card-text">published <%= book.volumeInfo.publishedDate %></p>
+                            <a target=”_blank” href="<%= book.volumeInfo.previewLink %>" class="btn btn-primary">Preview Book</a>
+                        </div>
+                    </div>
+                </div>
+        <% }); %>
+        </div>
+    </div>
+
+</section>
 
 <%- include("partials/footer.ejs") %>
