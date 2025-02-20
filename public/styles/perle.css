@@ -1,0 +1,16 @@
+body {
+    background-color: #FEFAE0;
+}
+
+.perle-navbar {
+    background-color: #626F47;
+}
+
+.btn-outline-light {
+    border-color: #FFCF50;
+}
+
+.btn-warning {
+    background-color: #FFCF50;
+    color: #626F47;
+}
