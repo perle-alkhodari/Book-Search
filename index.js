@@ -1,17 +1,25 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from 'axios';
+import pg from 'pg';
 
 // Constants
 const app = express();
 const port = 3000;
+const db = new pg.Client( {
+    user: "postgres",
+    host: "localhost",
+    database: "Kotob",
+    password: "002468",
+    port: 5432
+}); db.connect();
 
 // Middleware
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 // Globals
-var booksList = await searchBooks("hi");
+var booksList = await searchBooks("computer science");
 
 app.get("/kotob/home", (req, res)=> {
     res.render("home.ejs", {books: booksList});
