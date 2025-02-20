@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import axios from 'axios';
 import pg from 'pg';
+import bcrypt from 'bcrypt';
 
 // Constants
 const app = express();
@@ -25,11 +26,23 @@ app.get("/kotob/home", (req, res)=> {
     res.render("home.ejs", {books: booksList});
 })
 
+app.get("/kotob/register", (req, res) => {
+    res.render("register.ejs");
+})
+
 app.post("/search", async (req, res)=> {
     var userSearch = req.body.search;
     var results = await searchBooks(userSearch);
     booksList = results;
     res.redirect("/kotob/home");
+})
+
+app.post("/register", (req, res)=> {
+    var userName = req.body.username;
+    var userEmail = req.body.email;
+    var userPassword = req.body.password;
+
+
 })
 
 app.listen(port, ()=> {
