@@ -3,17 +3,22 @@ import bodyParser from "body-parser";
 import axios from 'axios';
 import pg from 'pg';
 import bcrypt from 'bcrypt';
+import env from 'dotenv';
+
+// Configs
+env.config();
 
 // Constants
 const app = express();
 const port = 3000;
 const db = new pg.Client( {
-    user: "postgres",
+    user: process.env.DB_USERNAME,
     host: "localhost",
     database: "Kotob",
     password: "002468",
     port: 5432
 }); db.connect();
+const saltRounds = 10;
 
 // Middleware
 app.use(bodyParser.urlencoded({extended: true}));
@@ -42,6 +47,15 @@ app.post("/register", (req, res)=> {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
 
+    bcrypt.hash(userPassword, saltRounds, async (err, hash)=> {
+        // Add user to db
+        await db.query(
+            "INSERT INTO users(username, email, password) VALUES($1, $2, $3);",
+            [userName, userEmail, hash]
+        )
+    })
+
+    res.redirect("/kotob/home");
 
 })
 
