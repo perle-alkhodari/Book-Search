@@ -28,6 +28,7 @@ app.use(express.static("public"));
 // Globals
 var booksList = await searchBooks("computer science");
 
+// GET Routes
 app.get("/kotob/home", (req, res)=> {
     res.render("home.ejs", {books: booksList});
 })
@@ -36,6 +37,7 @@ app.get("/kotob/register", (req, res) => {
     res.render("register.ejs");
 })
 
+// POST Routes
 app.post("/search", async (req, res)=> {
     var userSearch = req.body.search;
     var results = await searchBooks(userSearch);
@@ -48,19 +50,23 @@ app.post("/register", async (req, res)=> {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
 
-    // First send a verification code to the email
-    emailExists(userEmail);
+    // Check if email is already registered
+    if (await emailExists(userEmail)) {
+        // Exists, so show error
+        res.render("register.ejs", {emailExists: "Email already exists, try signing in instead"});
+    }
+    else {
 
-    bcrypt.hash(userPassword, saltRounds, async (err, hash)=> {
-        // Add user to db
-        await db.query(
-            "INSERT INTO users(username, email, password) VALUES($1, $2, $3);",
-            [userName, userEmail, hash]
-        )
-    })
-
-    res.redirect("/kotob/home");
-
+        bcrypt.hash(userPassword, saltRounds, async (err, hash)=> {
+            // Add user to db
+            await db.query(
+                "INSERT INTO users(username, email, password) VALUES($1, $2, $3);",
+                [userName, userEmail, hash]
+            )
+        })
+    
+        res.redirect("/kotob/home");
+    }
 })
 
 app.listen(port, ()=> {
