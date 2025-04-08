@@ -56,16 +56,47 @@ app.post("/register", async (req, res)=> {
         res.render("register.ejs", {emailExists: "Email already exists, try signing in instead"});
     }
     else {
-
+        // User is new, send a verification email to check their email is valid and they own it.
+        var code = sendVerificationEmail(userEmail);
+        var hashedPass = 
         bcrypt.hash(userPassword, saltRounds, async (err, hash)=> {
-            // Add user to db
-            await db.query(
-                "INSERT INTO users(username, email, password) VALUES($1, $2, $3);",
-                [userName, userEmail, hash]
-            )
+            hashedPass = hash;
         })
-    
+        res.render("verification.ejs", {code: code, email: userEmail, username: userName, password: hashedPass});
+
+        // bcrypt.hash(userPassword, saltRounds, async (err, hash)=> {
+        //     // Add user to db
+        //     await db.query(
+        //         "INSERT INTO users(username, email, password) VALUES($1, $2, $3);",
+        //         [userName, userEmail, hash]
+        //     )
+        // })
+    }
+})
+
+app.post("/verify-email", async (req, res)=> {
+    var userCode = req.body.verificationCode;
+    var code = req.body.code;
+    var userName = req.body.username;
+    var userEmail = req.body.email;
+    var hashedPass = req.body.password;
+
+    if (userCode == code) {
+        // They entered the right code so sign them in.
+        var userName = req.body.username;
+        var userEmail = req.body.email;
+        var hash = req.body.password;
+
+        await db.query(
+            "INSERT INTO users(username, email, password) VALUES($1, $2, $3);",
+            [userName, userEmail, hashedPass]
+        )
+
         res.redirect("/kotob/home");
+    }
+    else {
+        // Wrong code so let them know
+        res.render("verification.ejs", {code: code, email: userEmail, username: userName, password: hashedPass, error: "Wrong code... Try again."});
     }
 })
 
