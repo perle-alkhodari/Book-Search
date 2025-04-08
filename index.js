@@ -4,6 +4,7 @@ import axios from 'axios';
 import pg from 'pg';
 import bcrypt from 'bcrypt';
 import env from 'dotenv';
+import { sendVerificationEmail } from "./verifier.js";
 
 // Configs
 env.config();
@@ -42,12 +43,13 @@ app.post("/search", async (req, res)=> {
     res.redirect("/kotob/home");
 })
 
-app.post("/register", (req, res)=> {
+app.post("/register", async (req, res)=> {
     var userName = req.body.username;
     var userEmail = req.body.email;
     var userPassword = req.body.password;
 
     // First send a verification code to the email
+    emailExists(userEmail);
 
     bcrypt.hash(userPassword, saltRounds, async (err, hash)=> {
         // Add user to db
@@ -95,3 +97,19 @@ async function searchBooks(query) {
 
     return response.data;
 };
+
+// Database functions
+
+// returns whether or not an email exists within the users table
+async function emailExists(emailAddress) {
+    var emailExists = true;
+
+    var result = await db.query(
+        "SELECT * FROM users WHERE users.email = $1",
+        [emailAddress]
+    )
+
+    if (result.rows.length == 0) emailExists = false;
+
+    return emailExists;
+}

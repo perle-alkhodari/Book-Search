@@ -20,6 +20,7 @@ function generateCode() {
     return code;
 }
 
+// Returns a 4 digit verification code that is emailed to the user
 function sendVerificationEmail(userEmail) {
     var verificationCode = generateCode();
 
@@ -32,3 +33,5 @@ function sendVerificationEmail(userEmail) {
 
     return verificationCode;
 }
+
+export {sendVerificationEmail};
