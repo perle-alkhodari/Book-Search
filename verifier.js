@@ -13,3 +13,12 @@ var emailer = nodeMailer.createTransport({
             pass: process.env.APP_PASS,
         }
     });
+
+function sendVerificationEmail(userEmail, verificationCode) {
+    emailer.sendMail({
+        from: process.env.SMTP_EMAIL,
+        to: userEmail,
+        subject: "Kotob Account Verification Code",
+        text: `Enter this code to verify your account:\n\n${verificationCode}`
+    })
+}
