@@ -47,6 +47,8 @@ app.post("/register", (req, res)=> {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
 
+    // First send a verification code to the email
+
     bcrypt.hash(userPassword, saltRounds, async (err, hash)=> {
         // Add user to db
         await db.query(
