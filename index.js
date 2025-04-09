@@ -50,10 +50,14 @@ app.post("/register", async (req, res)=> {
     var userEmail = req.body.email;
     var userPassword = req.body.password;
 
+    if (userPassword.length < 5) {
+        res.render("register.ejs", {passError: "Password cannot be less than 5 characters..."});
+    }
+
     // Check if email is already registered
     if (await emailExists(userEmail)) {
         // Exists, so show error
-        res.render("register.ejs", {emailExists: "Email already exists, try signing in instead"});
+        res.render("register.ejs", {emailError: "Email already exists, try signing in instead"});
     }
     else {
         // User is new, send a verification email to check their email is valid and they own it.
