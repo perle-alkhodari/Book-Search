@@ -1,6 +1,12 @@
 body {
     background-color: #FEFAE0;
 }
+/* 
+.p-horizontal-center {
+    display:flex;
+    justify-content: center;
+    width: 100vw;
+} */
 
 .perle-navbar {
     background-color: #626F47;
