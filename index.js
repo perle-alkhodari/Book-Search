@@ -81,7 +81,6 @@ app.post("/verify-email", async (req, res)=> {
         // They entered the right code so register them.
         var userName = req.body.username;
         var userEmail = req.body.email;
-        var hash = req.body.password;
 
         await db.query(
             "INSERT INTO users(username, email, password) VALUES($1, $2, $3);",
