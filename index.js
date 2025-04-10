@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import axios from 'axios';
 import pg from 'pg';
-import bcrypt from 'bcrypt';
+import bcrypt, { hash } from 'bcrypt';
 import env from 'dotenv';
 import { sendVerificationEmail } from "./verifier.js";
 
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 // Globals
-var booksList = await searchBooks("computer science");
+// var booksList = await searchBooks("computer science");
 
 // GET Routes
 app.get("/kotob/home", (req, res)=> {
@@ -66,11 +66,9 @@ app.post("/register", async (req, res)=> {
     else {
         // User is new, send a verification email to check their email is valid and they own it.
         var code = sendVerificationEmail(userEmail);
-        var hashedPass;
         bcrypt.hash(userPassword, saltRounds, async (err, hash)=> {
-            hashedPass = hash;
+            res.render("verification.ejs", {code: code, email: userEmail, username: userName, password: hash});
         })
-        res.render("verification.ejs", {code: code, email: userEmail, username: userName, password: hashedPass});
     }
 })
 
@@ -80,9 +78,11 @@ app.post("/sign-in", async (req, res)=> {
 
     if (await emailExists(email)) {
         // Check if the passwords match
+        var storedPassword = await getPassword(email);
     }
     else {
         // render sign in page with email error
+        res.render("sign-in.ejs", {emailError: "There is no user with this email."});
     }
 })
 
@@ -97,6 +97,7 @@ app.post("/verify-email", async (req, res)=> {
         // They entered the right code so register them.
         var userName = req.body.username;
         var userEmail = req.body.email;
+
 
         await db.query(
             "INSERT INTO users(username, email, password) VALUES($1, $2, $3);",
@@ -160,4 +161,17 @@ async function emailExists(emailAddress) {
     if (result.rows.length == 0) emailExists = false;
 
     return emailExists;
+}
+
+// returns password of user of given email
+async function getPassword(emailAddress) {
+    var result = await db.query(
+        "SELECT password FROM users WHERE users.email = $1",
+        [emailAddress]
+    );
+
+    console.log(result.rows);
+    console.log(result.rows.password);
+
+    return result.rows.password;
 }
