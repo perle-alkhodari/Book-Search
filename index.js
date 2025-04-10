@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 // Globals
-// var booksList = await searchBooks("computer science");
+var booksList = await searchBooks("computer science");
 
 // GET Routes
 app.get("/kotob/home", (req, res)=> {
@@ -79,6 +79,16 @@ app.post("/sign-in", async (req, res)=> {
     if (await emailExists(email)) {
         // Check if the passwords match
         var storedPassword = await getPassword(email);
+        bcrypt.compare(password, storedPassword, (err, result) => {
+            if (result) {
+                // Passwords match
+                res.redirect("kotob/home");
+            }
+            else {
+                // Passwords don't match
+                res.render("sign-in.ejs", {passError: "Incorrect password..."});
+            }
+        })
     }
     else {
         // render sign in page with email error
@@ -169,9 +179,5 @@ async function getPassword(emailAddress) {
         "SELECT password FROM users WHERE users.email = $1",
         [emailAddress]
     );
-
-    console.log(result.rows);
-    console.log(result.rows.password);
-
-    return result.rows.password;
+    return result.rows[0].password;
 }
