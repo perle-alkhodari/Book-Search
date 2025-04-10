@@ -74,6 +74,18 @@ app.post("/register", async (req, res)=> {
     }
 })
 
+app.post("/sign-in", async (req, res)=> {
+    var password = req.body.password;
+    var email = req.body.email;
+
+    if (await emailExists(email)) {
+        // Check if the passwords match
+    }
+    else {
+        // render sign in page with email error
+    }
+})
+
 app.post("/verify-email", async (req, res)=> {
     var userCode = req.body.verificationCode;
     var code = req.body.code;
