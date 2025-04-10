@@ -37,6 +37,10 @@ app.get("/kotob/register", (req, res) => {
     res.render("register.ejs");
 })
 
+app.get("/kotob/sign-in", (req, res)=> {
+    res.render("sign-in.ejs");
+})
+
 // POST Routes
 app.post("/search", async (req, res)=> {
     var userSearch = req.body.search;

@@ -9,6 +9,10 @@ body {
     padding-top: 60px;
 }
 
+.form-group {
+    margin: 20px 0px;
+}
+
 .perle-navbar {
     background-color: #626F47;
 }
