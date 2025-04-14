@@ -13,6 +13,17 @@ body {
     margin: 20px 0px;
 }
 
+.p-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.p-flex {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
 .perle-navbar {
     background-color: #626F47;
 }
