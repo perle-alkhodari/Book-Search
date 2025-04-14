@@ -51,7 +51,10 @@ app.post("/search", async (req, res)=> {
 
 app.post("/add-book", async (req, res) => {
     var bookId = req.body.bookId;
-    res.send("HI");
+    var userid = req.body.userid;
+
+    // Add this to userbook combo
+
 })
 
 app.post("/register", async (req, res)=> {
@@ -84,10 +87,12 @@ app.post("/sign-in", async (req, res)=> {
     if (await emailExists(email)) {
         // Check if the passwords match
         var storedPassword = await getPassword(email);
-        bcrypt.compare(password, storedPassword, (err, result) => {
+        bcrypt.compare(password, storedPassword, async (err, result) => {
             if (result) {
                 // Passwords match
-                res.redirect("kotob/home");
+                var user = await getUser(email);
+                
+                res.render("home.ejs", {loggedIn: true, userid: user.id, username: user.username, books: booksList});
             }
             else {
                 // Passwords don't match
@@ -184,4 +189,12 @@ async function getPassword(emailAddress) {
         [emailAddress]
     );
     return result.rows[0].password;
+}
+
+async function getUser(emailAddress){
+    var result = await db.query(
+        "SELECT * FROM users WHERE users.email = $1", [emailAddress]
+    );
+
+    return result.rows[0];
 }
