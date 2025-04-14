@@ -18,6 +18,11 @@ body {
     gap: 10px;
 }
 
+.p-add-button {
+    border: none;
+    background: none;
+}
+
 .p-flex {
     display: flex;
     gap: 10px;

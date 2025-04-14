@@ -153,7 +153,7 @@ async function searchBooks(query) {
             console.log("api error")
         }
     }
-
+    console.log(response.data);
     return response.data;
 };
 
