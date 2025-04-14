@@ -49,6 +49,11 @@ app.post("/search", async (req, res)=> {
     res.redirect("/kotob/home");
 })
 
+app.post("/add-book", async (req, res) => {
+    var bookId = req.body.bookId;
+    res.send("HI");
+})
+
 app.post("/register", async (req, res)=> {
     var userName = req.body.username;
     var userEmail = req.body.email;
@@ -153,7 +158,6 @@ async function searchBooks(query) {
             console.log("api error")
         }
     }
-    console.log(response.data);
     return response.data;
 };
 

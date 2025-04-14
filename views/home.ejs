@@ -22,7 +22,7 @@
                             <p class="card-text">published <%= book.volumeInfo.publishedDate %></p>
                             <div class="p-flex">
                                 <a target=”_blank” href="<%= book.volumeInfo.previewLink %>" class="btn btn-primary">Preview Book</a>
-                                <form action="add-book" method="post">
+                                <form action="/add-book" method="post">
                                     <input type="hidden" name="bookId" value="<%= book.id %> ">
 
                                     <button class="p-add-button" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="padding: 1px;" fill="green" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
