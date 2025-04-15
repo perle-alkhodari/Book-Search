@@ -208,3 +208,10 @@ async function getUser(emailAddress){
 
     return result.rows[0];
 }
+
+async function addUserBook(userId, bookId) {
+    var result = await db.query(
+        "INSERT INTO userbooks (book_id, user_id) VALUES($1, $2)",
+        [bookId, userId]
+    );
+}
