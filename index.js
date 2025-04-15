@@ -21,12 +21,18 @@ const db = new pg.Client( {
 }); db.connect();
 const saltRounds = 10;
 
+// Globals
+var booksList = await searchBooks("computer science");
+
 // Middleware
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-
-// Globals
-var booksList = await searchBooks("computer science");
+app.use((req, res, next)=> {
+    res.locals = {
+        books: booksList
+    }
+    next();
+})
 
 // GET Routes
 app.get("/kotob/home", (req, res)=> {
@@ -47,6 +53,10 @@ app.post("/search", async (req, res)=> {
     var results = await searchBooks(userSearch);
     booksList = results;
     res.redirect("/kotob/home");
+})
+
+app.post("/logout", (req, res) => {
+    res.render("home.ejs");
 })
 
 app.post("/add-book", async (req, res) => {

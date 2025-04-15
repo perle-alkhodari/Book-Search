@@ -30,12 +30,22 @@
             </form>
     
             <div class="text-end">
-              <a href="/kotob/sign-in">
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
-              </a>
-              <a href="/kotob/register">
-                <button type="button" class="btn btn-warning">Sign-up</button>
-              </a>
+              <% if (!locals.loggedIn) { %>
+                <a href="/kotob/sign-in">
+                  <button type="button" class="btn btn-outline-light me-2">Login</button>
+                </a>
+                <a href="/kotob/register">
+                  <button type="button" class="btn btn-warning">Sign Up</button>
+                </a>
+              <% } else { %>
+                <form action="/logout" method="post">
+                    <button type="submit" class="btn btn-warning">Logout</button>
+                </form>
+
+                <a href="/kotob/library">
+                  <button type="button" class="btn btn-warning">My Library</button>
+                </a>
+              <% } %>
               
             </div>
           </div>
