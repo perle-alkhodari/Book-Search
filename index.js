@@ -61,10 +61,13 @@ app.post("/logout", (req, res) => {
 
 app.post("/add-book", async (req, res) => {
     var bookId = req.body.bookId;
-    var userid = req.body.userid;
-
+    var userId = req.body.userId;
+    
     // Add this to userbook combo
+    await addUserBook(userId, bookId);
+    var user = await getUserById(userId);
 
+    res.render("home.ejs", {user: user})
 })
 
 app.post("/register", async (req, res)=> {
@@ -100,9 +103,9 @@ app.post("/sign-in", async (req, res)=> {
         bcrypt.compare(password, storedPassword, async (err, result) => {
             if (result) {
                 // Passwords match
-                var user = await getUser(email);
+                var user = await getUserByEmail(email);
                 
-                res.render("home.ejs", {loggedIn: true, userid: user.id, username: user.username, books: booksList});
+                res.render("home.ejs", {loggedIn: true, user: user});
             }
             else {
                 // Passwords don't match
@@ -201,9 +204,17 @@ async function getPassword(emailAddress) {
     return result.rows[0].password;
 }
 
-async function getUser(emailAddress){
+async function getUserByEmail(emailAddress){
     var result = await db.query(
         "SELECT * FROM users WHERE users.email = $1", [emailAddress]
+    );
+
+    return result.rows[0];
+}
+
+async function getUserById(userId) {
+    var result = await db.query(
+        "SELECT * FROM users WHERE id = $1", [userId]
     );
 
     return result.rows[0];
