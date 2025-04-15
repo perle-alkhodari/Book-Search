@@ -38,13 +38,15 @@
                   <button type="button" class="btn btn-warning">Sign Up</button>
                 </a>
               <% } else { %>
-                <form action="/logout" method="post">
-                    <button type="submit" class="btn btn-warning">Logout</button>
-                </form>
-
-                <a href="/kotob/library">
-                  <button type="button" class="btn btn-warning">My Library</button>
-                </a>
+                <div class="p-flex">
+                    <form action="/logout" method="post">
+                        <button type="submit" class="btn btn-warning">Logout</button>
+                    </form>
+  
+                  <a href="/kotob/library">
+                    <button type="button" class="btn btn-warning">My Library</button>
+                  </a>
+                </div>
               <% } %>
               
             </div>
