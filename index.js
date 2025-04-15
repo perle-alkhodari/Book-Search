@@ -51,8 +51,8 @@ app.get("/kotob/sign-in", (req, res)=> {
 app.post("/search", async (req, res)=> {
     var userSearch = req.body.search;
     var results = await searchBooks(userSearch);
-    booksList = results;
-    res.redirect("/kotob/home");
+    var user = await getUserById(req.body.userId);
+    res.render("home.ejs", {user: user, books: results});
 })
 
 app.post("/logout", (req, res) => {
@@ -62,7 +62,7 @@ app.post("/logout", (req, res) => {
 app.post("/add-book", async (req, res) => {
     var bookId = req.body.bookId;
     var userId = req.body.userId;
-    
+
     // Add this to userbook combo
     await addUserBook(userId, bookId);
     var user = await getUserById(userId);

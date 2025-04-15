@@ -25,6 +25,9 @@
             </ul>
     
             <form action="/search" method="post" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <% if (locals.user) { %>
+               <input type="hidden" name="userId" value="<%= locals.user.id %>">
+              <% } %>
               <input type="search" name="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
             </form>
     
