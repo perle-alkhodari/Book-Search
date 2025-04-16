@@ -67,6 +67,8 @@ app.post("/add-book", async (req, res) => {
     await addUserBook(userId, bookId);
     var user = await getUserById(userId);
 
+    console.log(await getUserBooks(userId));
+
     res.render("home.ejs", {user: user})
 })
 
@@ -225,4 +227,17 @@ async function addUserBook(userId, bookId) {
         "INSERT INTO userbooks (book_id, user_id) VALUES($1, $2)",
         [bookId, userId]
     );
+}
+
+async function getUserBooks(userId) {
+    var result = await db.query(
+        "SELECT book_id FROM userbooks WHERE user_id = $1", [userId]
+    )
+
+    var userBooks = [];
+    result.rows.forEach(result => {
+        userBooks.push(result.book_id);
+    })
+
+    return userBooks;
 }
