@@ -22,13 +22,14 @@ const db = new pg.Client( {
 const saltRounds = 10;
 
 // Globals
-var booksList = await searchBooks("computer science");
-var lastSearch = "";
+var lastSearch = "computer science";
+var booksList = await searchBooks(lastSearch);
 
 // Middleware
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-app.use((req, res, next)=> {
+app.use(async (req, res, next)=> {
+    booksList = await searchBooks(lastSearch);
     res.locals = {
         books: booksList
     }
@@ -51,6 +52,7 @@ app.get("/kotob/sign-in", (req, res)=> {
 // POST Routes
 app.post("/search", async (req, res)=> {
     var userSearch = req.body.search;
+    lastSearch = userSearch;
     var results = await searchBooks(userSearch);
     var user = await getUserById(req.body.userId);
     var userBooks = await getUserBooks(req.body.userId);
