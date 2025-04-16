@@ -72,7 +72,10 @@ app.post("/add-book", async (req, res) => {
 })
 
 app.post("/delete-book", async (req, res)=> {
-    
+    var bookId = req.body.bookId;
+    var userId = req.body.userId;
+
+
 })
 
 app.post("/register", async (req, res)=> {
@@ -243,4 +246,10 @@ async function getUserBooks(userId) {
     })
 
     return userBooks;
+}
+
+async function deleteUserBook(userId, bookId) {
+    var result = await db.query(
+        "DELETE FROM userbooks WHERE bookId = $1 AND userId = $2", [bookId, userId]
+    )
 }
