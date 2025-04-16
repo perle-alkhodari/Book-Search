@@ -23,6 +23,7 @@ const saltRounds = 10;
 
 // Globals
 var booksList = await searchBooks("computer science");
+var lastSearch = "";
 
 // Middleware
 app.use(bodyParser.urlencoded({extended: true}));
@@ -52,7 +53,9 @@ app.post("/search", async (req, res)=> {
     var userSearch = req.body.search;
     var results = await searchBooks(userSearch);
     var user = await getUserById(req.body.userId);
-    res.render("home.ejs", {user: user, books: results});
+    var userBooks = await getUserBooks(req.body.userId);
+
+    res.render("home.ejs", {user: user, books: results, userBooks: userBooks});
 })
 
 app.post("/logout", (req, res) => {
@@ -68,14 +71,18 @@ app.post("/add-book", async (req, res) => {
     var user = await getUserById(userId);
     var userBooks = await getUserBooks(userId);
 
-    res.render("home.ejs", {user: user, userBooks: userBooks})
+    res.render("home.ejs", {user: user, userBooks: userBooks});
 })
 
 app.post("/delete-book", async (req, res)=> {
     var bookId = req.body.bookId;
     var userId = req.body.userId;
 
+    await deleteUserBook(userId, bookId);
+    var user = await getUserById(userId);
+    var userBooks = await getUserBooks(userId);
 
+    res.render("home.ejs", {user: user, userBooks: userBooks});
 })
 
 app.post("/register", async (req, res)=> {
@@ -112,8 +119,9 @@ app.post("/sign-in", async (req, res)=> {
             if (result) {
                 // Passwords match
                 var user = await getUserByEmail(email);
+                var userBooks = await getUserBooks(user.id);
                 
-                res.render("home.ejs", {loggedIn: true, user: user});
+                res.render("home.ejs", {loggedIn: true, user: user, userBooks: userBooks});
             }
             else {
                 // Passwords don't match
@@ -250,6 +258,6 @@ async function getUserBooks(userId) {
 
 async function deleteUserBook(userId, bookId) {
     var result = await db.query(
-        "DELETE FROM userbooks WHERE bookId = $1 AND userId = $2", [bookId, userId]
+        "DELETE FROM userbooks WHERE book_id = $1 AND user_id = $2", [bookId, userId]
     )
 }
