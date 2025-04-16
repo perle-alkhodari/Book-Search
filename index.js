@@ -71,6 +71,10 @@ app.post("/add-book", async (req, res) => {
     res.render("home.ejs", {user: user, userBooks: userBooks})
 })
 
+app.post("/delete-book", async (req, res)=> {
+    
+})
+
 app.post("/register", async (req, res)=> {
     var userName = req.body.username;
     var userEmail = req.body.email;
