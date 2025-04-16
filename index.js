@@ -66,10 +66,9 @@ app.post("/add-book", async (req, res) => {
     // Add this to userbook combo
     await addUserBook(userId, bookId);
     var user = await getUserById(userId);
+    var userBooks = await getUserBooks(userId);
 
-    console.log(await getUserBooks(userId));
-
-    res.render("home.ejs", {user: user})
+    res.render("home.ejs", {user: user, userBooks: userBooks})
 })
 
 app.post("/register", async (req, res)=> {
