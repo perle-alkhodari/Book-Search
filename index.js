@@ -89,7 +89,7 @@ app.post("/delete-book", async (req, res)=> {
 
 app.post("/my-library", async (req, res)=> {
     var userId = req.body.userId;
-    console.log(userId);
+    await getBookById();
 })
 
 app.post("/register", async (req, res)=> {
@@ -204,13 +204,17 @@ async function searchBooks(query) {
 
 async function getBookById() {
     var bookId = "DvXxBwAAQBAJ";
+    var response = {
+        data: ""
+    }
+
     try {
-        var response = await axios(
+        response = await axios(
         {
             method: "GET",
             url: "https://www.googleapis.com/books/v1/volumes",
             params: {
-                volumeId: "bookId"
+                volumeId: bookId
             }
         })
     } catch(error) {
