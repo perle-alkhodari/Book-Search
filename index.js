@@ -204,8 +204,7 @@ async function searchBooks(query) {
     return response.data;
 };
 
-async function getBookById() {
-    var bookId = "DvXxBwAAQBAJ";
+async function getBookById(bookId) {
     var response = {
         data: ""
     }
