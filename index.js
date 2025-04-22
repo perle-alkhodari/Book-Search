@@ -89,9 +89,17 @@ app.post("/delete-book", async (req, res)=> {
 
 app.post("/my-library", async (req, res)=> {
     var userId = req.body.userId;
-    await getBookById();
+    var userBooks = await getUserBooks(userId);
 
-    res.render("library.ejs");
+    var userLibrary = await Promise.all(
+        userBooks.map(async id => {
+            return await getBookById(id);
+        })
+    );
+
+    console.log(userLibrary);
+
+    res.render("library.ejs", {userLibrary: userLibrary});
 })
 
 app.post("/register", async (req, res)=> {
@@ -229,7 +237,7 @@ async function getBookById(bookId) {
             console.log("api error")
         }
     }
-    console.log(response.data);
+
     return response.data;
 }
 
