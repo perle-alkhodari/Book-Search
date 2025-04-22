@@ -214,10 +214,7 @@ async function getBookById() {
         response = await axios(
         {
             method: "GET",
-            url: "https://www.googleapis.com/books/v1/volumes",
-            params: {
-                volumeId: bookId
-            }
+            url: "https://www.googleapis.com/books/v1/volumes/"+bookId
         })
     } catch(error) {
 
