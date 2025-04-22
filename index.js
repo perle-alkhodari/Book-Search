@@ -87,6 +87,11 @@ app.post("/delete-book", async (req, res)=> {
     res.render("home.ejs", {user: user, userBooks: userBooks});
 })
 
+app.post("/my-library", async (req, res)=> {
+    var userId = req.body.userId;
+    console.log(userId);
+})
+
 app.post("/register", async (req, res)=> {
     var userName = req.body.username;
     var userEmail = req.body.email;

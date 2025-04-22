@@ -45,9 +45,10 @@
                         <button type="submit" class="btn btn-warning">Logout</button>
                     </form>
   
-                  <a href="/kotob/library">
-                    <button type="button" class="btn btn-warning">My Library</button>
-                  </a>
+                    <form action="/my-library" method="post">
+                        <input type="hidden" name="userId" value="<%= locals.user.id %>">
+                        <button type="submit" class="btn btn-warning">My Library</button>
+                    </form>
                 </div>
               <% } %>
               
