@@ -90,6 +90,8 @@ app.post("/delete-book", async (req, res)=> {
 app.post("/my-library", async (req, res)=> {
     var userId = req.body.userId;
     var userBooks = await getUserBooks(userId);
+    var user = getUserById(userId);
+    var userBooks = await getUserBooks(userId);
 
     var userLibrary = await Promise.all(
         userBooks.map(async id => {
@@ -99,7 +101,7 @@ app.post("/my-library", async (req, res)=> {
 
     console.log(userLibrary);
 
-    res.render("library.ejs", {userLibrary: userLibrary});
+    res.render("library.ejs", {user: user, userLibrary: userLibrary, userBooks: userBooks});
 })
 
 app.post("/register", async (req, res)=> {
