@@ -90,6 +90,8 @@ app.post("/delete-book", async (req, res)=> {
 app.post("/my-library", async (req, res)=> {
     var userId = req.body.userId;
     await getBookById();
+
+    res.render("library.ejs");
 })
 
 app.post("/register", async (req, res)=> {
