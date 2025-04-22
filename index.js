@@ -197,6 +197,35 @@ async function searchBooks(query) {
     return response.data;
 };
 
+async function getBookById() {
+    var bookId = "DvXxBwAAQBAJ";
+    try {
+        var response = await axios(
+        {
+            method: "GET",
+            url: "https://www.googleapis.com/books/v1/volumes",
+            params: {
+                volumeId: "bookId"
+            }
+        })
+    } catch(error) {
+
+        if (error.response) {
+            console.log("server error")
+        }
+
+        else if (error.request) {
+            console.log("no response")
+        } 
+        
+        else {
+            console.log("api error")
+        }
+    }
+    console.log(response.data);
+    return response.data;
+}
+
 // Database functions
 
 // returns whether or not an email exists within the users table
