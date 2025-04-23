@@ -90,18 +90,15 @@ app.post("/delete-book", async (req, res)=> {
 app.post("/my-library", async (req, res)=> {
     var userId = req.body.userId;
     var userBooks = await getUserBooks(userId);
-    var user = getUserById(userId);
-    var userBooks = await getUserBooks(userId);
 
+    var user = await getUserById(userId);
     var userLibrary = await Promise.all(
         userBooks.map(async id => {
             return await getBookById(id);
         })
     );
 
-    console.log(userLibrary);
-
-    res.render("library.ejs", {user: user, userLibrary: userLibrary, userBooks: userBooks});
+    res.render("library.ejs", {userLibrary: userLibrary, user: user, userBooks: userBooks});
 })
 
 app.post("/register", async (req, res)=> {
