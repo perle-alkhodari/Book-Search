@@ -84,7 +84,17 @@ app.post("/delete-book", async (req, res)=> {
     var user = await getUserById(userId);
     var userBooks = await getUserBooks(userId);
 
-    res.render("home.ejs", {user: user, userBooks: userBooks});
+    if (req.body.library) {
+        var userLibrary = await Promise.all(
+            userBooks.map(async id => {
+                return await getBookById(id);
+            })
+        );
+        res.render("library.ejs", {userLibrary: userLibrary, user: user, userBooks: userBooks});
+    }
+    else {
+        res.render("home.ejs", {user: user, userBooks: userBooks});
+    }
 })
 
 app.post("/my-library", async (req, res)=> {
