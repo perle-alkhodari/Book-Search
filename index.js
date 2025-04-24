@@ -111,6 +111,14 @@ app.post("/my-library", async (req, res)=> {
     res.render("library.ejs", {userLibrary: userLibrary, user: user, userBooks: userBooks});
 })
 
+app.post("/kotob/home", async (req, res)=> {
+    var userId = req.body.userId;
+    var user = await getUserById(userId);
+    var userBooks = await getUserBooks(userId);
+
+    res.render("home.ejs", {user: user, userBooks: userBooks})
+})
+
 app.post("/register", async (req, res)=> {
     var userName = req.body.username;
     var userEmail = req.body.email;

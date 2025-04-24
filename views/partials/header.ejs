@@ -14,12 +14,22 @@
     <header class="p-3 perle-navbar">
         <div class="container">
           <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <% if (locals.user) { %>
+              <form action="/kotob/home" method="post">
+                <input type="hidden" name="userId" value="<%= locals.user.id %>">
+                <button style="color: white; " class="p-add-button" type="submit">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="43" fill="currentColor" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
+                    <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                  </svg>
+                </button>
+              </form>
+             <% } else { %>
             <a href="/kotob/home" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg xmlns="http://www.w3.org/2000/svg" height="43" fill="currentColor" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16">
                     <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
                 </svg>
             </a>
-    
+            <% } %>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <li><a href="/kotob/home" class="nav-link px-2 text-white">Home</a></li>
             </ul>
