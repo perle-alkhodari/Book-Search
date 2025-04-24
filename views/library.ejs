@@ -26,7 +26,6 @@
                                     <!-- If the book id exists within userbooks, don't show add icon-->
 
                                         <form action="/delete-book" method="post">
-                                            <input type="hidden" name="library" value="true"%>
                                             <input type="hidden" name="bookId" value="<%= book.id %> ">
                                             <input type="hidden" name="userId" value="<%= locals.user.id %>">
                                             <button class="p-add-button" type="submit">
