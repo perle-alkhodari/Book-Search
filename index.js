@@ -24,6 +24,7 @@ const saltRounds = 10;
 // Globals
 var lastSearch = "computer science";
 var booksList = await searchBooks(lastSearch);
+var currentYear = new Date().getFullYear();
 
 // Middleware
 app.use(bodyParser.urlencoded({extended: true}));
@@ -31,7 +32,8 @@ app.use(express.static("public"));
 app.use(async (req, res, next)=> {
     booksList = await searchBooks(lastSearch);
     res.locals = {
-        books: booksList
+        books: booksList,
+        currentYear: currentYear
     }
     next();
 })
