@@ -52,7 +52,7 @@ app.get("/kotob/sign-in", (req, res)=> {
 })
 
 app.get("/kotob/about", (req, res)=> {
-    res.render("");
+    res.render("about.ejs");
 })
 
 // POST Routes
